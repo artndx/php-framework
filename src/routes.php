@@ -1,8 +1,7 @@
 <?php
 
 return [
-    '~^hello/(.*)$~'=>[\MyProject\Controllers\MainController::class, 'sayHello'],
-    '~^$~' => [\MyProject\Controllers\MainController::class, 'main'],
+    '~^$~' => [\MyProject\Controllers\ArticlesController::class, 'main'],
     '~^articles/(\d+)$~' => [\MyProject\Controllers\ArticlesController::class, 'view'],
     '~^articles/update/(\d+)$~' => [\MyProject\Controllers\ArticlesController::class, 'update'],
     '~^articles/edit/(\d+)$~' => [\MyProject\Controllers\ArticlesController::class, 'edit'],

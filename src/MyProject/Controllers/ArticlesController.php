@@ -14,6 +14,11 @@ class ArticlesController
     {
         $this->view = new View(__DIR__ . '/../../../templates');
     }
+
+    public function main(){
+        $articles = Article::findAll();
+        $this->view->renderHtml('articles/main.php',['articles'=>$articles]);
+    }
     
     // public function create() 
     // {
@@ -66,13 +71,14 @@ class ArticlesController
         $article->setName('Новое название статьи');
         $article->setText('Новый текст статьи');
         $article->save();
-        $this->view->renderHtml('articles/view.php', ['article' => $article]);
+        $this->main();
     }
 
     public function delete(int $articleId)
     {
         $article = Article::getById($articleId);
         $article->delete();
+        $this->main();
     }
 }
 

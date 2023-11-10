@@ -2,14 +2,10 @@
     require __DIR__.'/../header.php';
 ?>
 
-<form action="http://localhost:8080/frame/www/articles/update/<?=$article->getId();?>" method="POST">
+<form action="http://localhost:8080/frame/www/articles/" method="POST">
     <div class="mb-3">
-        <label for="exampleInputName" class="form-label">Name article</label>
+        <label for="exampleInputName" class="form-label">Text comment</label>
         <input type="text" class="form-control" id="exampleInputName" name ="name" value="<?=$article->getName();?>">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputText" class="form-label">Text article</label>
-        <input type="text" class="form-control" id="exampleInputText" name = "text" value="<?=$article->getText();?>">
     </div>
     <div class="mb-3">
         <label for="select" class="form-label">Author article</label>

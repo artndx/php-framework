@@ -20,20 +20,20 @@ class ArticlesController
         $this->view->renderHtml('articles/main.php',['articles'=>$articles]);
     }
     
-    // public function create() 
-    // {
-    //     $users = User::findAll();
-    //     $this->view->renderHtml('articles/create.php', ['users' => $users]);
-    // }
+    public function create() 
+    {
+        $users = User::findAll();
+        $this->view->renderHtml('articles/create.php', ['users' => $users]);
+    }
     
-    // public function store()
-    // {
-    //     $article = new Article::getById($articleId);
-    //     $article->setName($_POST['name']);
-    //     $article->setText($_POST['text']);
-    //     $article->save();
-    //     $this->view->renderHtml('articles/view.php', ['article' => $article]);
-    // }
+    public function store(){
+        $article = new Article;
+        $article->setName($_POST['name']);
+        $article->setText($_POST['text']);
+        $article->setAuthorId($_POST['author']);
+        $article ->save();
+        return header('Location: http://localhost:8080/frame/www');
+    }
 
     public function view(int $articleId)
     {

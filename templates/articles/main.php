@@ -17,12 +17,12 @@ foreach($articles as $article){
     echo '
     <tr>
       <th scope="row">'.++$i.'</th>
-      <td><a href="http://localhost/frame/www/articles/'.$article->getId().'"> '.$article->getName().'</a></td>
+      <td><a href="http://localhost:8080/frame/www/articles/'.$article->getId().'"> '.$article->getName().'</a></td>
       <td>'.$article->getText().'</td>
-      <td>'.$article->getAuthor()->getNickname().'</td>
+      <td>'.$article->getAuthorId()->getNickname().'</td>
     </tr>';
 }
 echo '
     </tbody>
-    </table> <a href="http://localhost/frame/www/articles/add">'.'Добавить новую статью';
+    </table> <a href="http://localhost:8080/frame/www/articles/create">'.'Добавить новую статью';
 include __DIR__ . '/../footer.php'; ?>

@@ -4,14 +4,13 @@ namespace MyProject\Models\Articles;
 
 use MyProject\Models\ActiveRecordEntity;
 use MyProject\Models\Users\User;
+use MyProject\Services\Db;
 
 class Article extends ActiveRecordEntity
 {
     protected  $name;
     protected  $text;
     protected  $authorId;
-    protected  $createdAt;
-
 
     public function getName(): string
     {
@@ -32,14 +31,14 @@ class Article extends ActiveRecordEntity
         $this->text = $text;
     }
 
-    public function getAuthor(): User
+    public function  getAuthorId():User
     {
-        return User::getById($this->authorId);
+        $db = Db::getInstance();
+        $user = $db->query('SELECT * FROM `users` WHERE `id`=:id', [':id'=>$this->authorId], User::class);
+        return $user[0];
     }
-
-    public function setAuthor(User $author)
-    {
-        $this->authorId = $author->getId();
+    public function setAuthorId(int $authorId){
+        $this->authorId = $authorId;
     }
 
     protected static function getTableName(): string

@@ -5,6 +5,8 @@ namespace MyProject\Controllers;
 use MyProject\Models\Articles\Article;
 use MyProject\Models\Users\User;
 use MyProject\View\View;
+use MyProject\Models\Comments\Comment;
+
 
 class ArticlesController
 {
@@ -43,17 +45,20 @@ class ArticlesController
             $this->view->renderHtml('errors/404.php', [], 404);
             return;
         }
-
-        $this->view->renderHtml('articles/view.php', ['article' => $article]);
+        $comments = Comment::findAllComments($articleId);
+        $this->view->renderHtml('articles/view.php', ['article' => $article,
+                                                      'comments' => $comments]);
     }
 
     public function update(int $articleId)
     {
         $article = Article::getById($articleId);
         $article->setName($_POST['name']);
-        $article->setText($_POST['text']);        
+        $article->setText($_POST['text']);  
+        $article->setAuthorId($_POST['author']);      
         $article->save();
-        $this->view->renderHtml('articles/view.php', ['article' => $article]);
+        //$this->view->renderHtml('articles/view.php', ['article' => $article]);
+        $this->view($articleId);
     }
 
     public function edit(int $articleId)
@@ -63,20 +68,17 @@ class ArticlesController
         $this->view->renderHtml('articles/edit.php', ['article' => $article, 'users'=> $users]);
     }
 
-    public function add(): void
-    {
-        $author = User::getById(1);
-        $article = new Article();
-        $article->setAuthor($author);
-        $article->setName('Новое название статьи');
-        $article->setText('Новый текст статьи');
-        $article->save();
-        $this->main();
-    }
-
     public function delete(int $articleId)
     {
         $article = Article::getById($articleId);
+        if(Comment::findAllComments($article->getId()) != null)
+        {
+            $comments = Comment::findAllComments($article->getId());
+            foreach($comments as $comment)
+            {
+                $comment->delete();
+            }
+        }
         $article->delete();
         $this->main();
     }

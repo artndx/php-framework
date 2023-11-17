@@ -118,9 +118,17 @@ abstract class ActiveRecordEntity
         $db = Db::getInstance();
         $db->query(
             'DELETE FROM `' . static::getTableName() . '` WHERE id = :id',
-            [':id' => $this->id]
+            [':id' => $this->id], static::class
         );
         $this->id = null;
+    }
+
+    public static function findAllComments(int $postId)
+    {
+        $db = Db::getInstance();
+        $sql = 'SELECT * FROM `'.static::getTableName().'` WHERE `post_id`=:id';
+        $comments = $db->query($sql, [':id' => $postId], static::class);
+        return $comments;
     }
 
     

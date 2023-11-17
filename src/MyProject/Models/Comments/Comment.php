@@ -5,52 +5,48 @@ namespace MyProject\Models\Comments;
 use MyProject\Models\ActiveRecordEntity;
 use MyProject\Models\Users\User;
 use MyProject\Models\Articles\Article;
+use MyProject\Services\Db;
 
 
 class Comment extends ActiveRecordEntity
 {
+    protected  $postId;
     protected  $id;
-    protected  $authorId;
     protected  $text;
-    protected  $commentId;
+    protected  $authorId;
 
 
-    public function getId(): int
+    public function getPostId()
     {
-        return $this->id;
+        return $this->postId;
     }
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
-
-    public function getAuthorId(): User
-    {
-        return User::getById($this->authorId);
-    }
-
-    public function setAuthor(User $author)
-    {
-        $this->authorId = $author->getId();
-    }
-
-    public function getText(): string
+    public function getText()
     {
         return $this->text;
     }
+    public function getUserById()
+    {
+        $db = Db::getInstance();
+        $user = $db->query('SELECT * FROM `users` WHERE `id`=:id', [':id'=>$this->authorId], User::class);
+        return $user[0];
+    }
 
+    public function setPostId(int $postId)
+    {
+        $this->postId = $postId;
+    }
+    
     public function setText(string $text)
     {
         $this->text = $text;
     }
-
-    public function getCommentId(): int
-    {
-        return $this->id;
+    public function setAuthorId(int $authorId){
+        $this->authorId = $authorId;
     }
-    public function setCommentId(int $id)
+
+    public static function getTableName()
     {
-        $this->id = $id;
+        return 'comments';
     }
 }
 

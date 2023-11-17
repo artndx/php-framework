@@ -37,7 +37,8 @@ class Article extends ActiveRecordEntity
         $user = $db->query('SELECT * FROM `users` WHERE `id`=:id', [':id'=>$this->authorId], User::class);
         return $user[0];
     }
-    public function setAuthorId(int $authorId){
+    public function setAuthorId(int $authorId)
+    {
         $this->authorId = $authorId;
     }
 

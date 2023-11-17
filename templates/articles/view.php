@@ -8,9 +8,19 @@
     <p class="card-text"><?=$article->getAuthorId()->getNickname();?></p>
     <a href="http://localhost:8080/frame/www/articles/edit/<?= $article->getId() ?>" class="card-link">Update article</a>
     <a href="http://localhost:8080/frame/www/articles/delete/<?= $article->getId() ?>" class="card-link">Delete article</a>
-    <a href="http://localhost:8080/frame/www/articles/addcomment/<?= $article->getId() ?>" class="card-link">Add comment</a>
+    <a href="http://localhost:8080/frame/www/articles/comment/create/<?= $article->getId() ?>" class="card-link">Add comment</a>
   </div>
 </div>
-
+<h3>Comments</h3>
+<?php foreach($comments as $comment):?>
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title"><?=$comment->getUserById()->getNickname();?></h5>
+    <p class="card-text"><?=$comment->getText();?></p>
+    <a href="http://localhost:8080/frame/www/articles/comment/edit/<?=$comment->getId();?>" class="/frame/www/">edit comment</a>
+    <a href="http://localhost:8080/frame/www/articles/comment/delete/<?=$comment->getId();?>" class="/frame/www/">delete comment</a>
+  </div>
+</div>
+<?php endforeach;?>
 <?php
 require __DIR__.'/../footer.php';

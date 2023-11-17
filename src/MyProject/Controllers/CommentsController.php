@@ -2,8 +2,10 @@
 
 namespace MyProject\Controllers;
 
-use MyProject\View\View;
 use MyProject\Models\Articles\Article;
+use MyProject\Models\Users\User;
+use MyProject\View\View;
+use MyProject\Models\Comments\Comment;
 
 class CommentsController
 {
@@ -13,32 +15,46 @@ class CommentsController
     {
         $this->view = new View(__DIR__ . '/../../../templates');
     }
-    public function update(int $articleId)
+    
+    public function create(int $postId) 
     {
-        $article = Article::getById($articleId);
-        $article->setName($_POST['name']);
-        $article->setText($_POST['text']);        
-        $article->save();
-        $this->view->renderHtml('articles/view.php', ['article' => $article]);
-    }
-
-    public function edit(int $articleId)
-    {
-        $article = Article::getById($articleId);
         $users = User::findAll();
-        $this->view->renderHtml('articles/edit.php', ['article' => $article, 'users'=> $users]);
+        $this->view->renderHtml('articles/createComment.php', ['users' => $users,
+                                                               'postId' => $postId]);
     }
-
-    public function add(): void
-    {
+    
+    public function store(){
+        $comment = new Comment;
         
+        $comment->setPostId($_POST['postId']);
+        $comment->setText($_POST['text']);
+        $comment->setAuthorId($_POST['author']);
+
+        $comment ->save();
+        return header('Location: http://localhost:8080/frame/www/articles/'.$comment->getPostId());
     }
 
-    public function delete(int $articleId)
+    public function update(int $id)
     {
-        $article = Article::getById($articleId);
-        $article->delete();
-        $this->main();
+        $comment = Comment::getById($id);
+        $comment->setText($_POST['text']);
+        $comment->save();
+        return header('Location: http://localhost:8080/frame/www/articles/'.$comment->getPostId());
+    }
+
+    public function edit(int $id)
+    {
+        $users = User::findAll();
+        $comment = Comment::getById($id);
+        $this->view->renderHtml('articles/editComment.php', ['comment' => $comment, 'users'=> $users]);
+    }
+
+    public function delete(int $id)
+    {
+        $comment = Comment::getById($id);
+        $comment->delete();
+        return header('Location: http://localhost:8080/frame/www/articles/'.$comment->getPostId());
     }
 }
+
 ?>
